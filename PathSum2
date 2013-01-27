@@ -1,0 +1,58 @@
+public class PathSum2 {
+    
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub {1,-2,-3,1,3,-2,#,-1} //{-1,5,#,4,#,#,2,-4}
+		PathSum2 bsum = new PathSum2();
+		TreeNode x = new TreeNode(-1);
+		x.left = new TreeNode(5);
+		x.left.right = new TreeNode(2);
+		x.left.right.right = new TreeNode(-6);
+		x.left.right.right.right = new TreeNode(6);
+		x.left.left = new TreeNode(4);		
+		x.left.left.left = new TreeNode(-2);
+		x.left.left.right = new TreeNode(2);
+		x.left.left.right.left = new TreeNode(-4);
+		System.out.println(bsum.pathSum(x,6));	
+	}
+	
+	 ArrayList<ArrayList<Integer>> listOfList = new ArrayList<ArrayList<Integer>>(); 
+	 ArrayList<Integer> passList = new ArrayList<Integer>();
+
+	 public ArrayList<ArrayList<Integer>> pathSum(TreeNode root, int sum){
+		 listOfList.clear();
+		 passList.clear();
+		 hasPathSum( root, sum);
+		 return listOfList;
+	 }
+
+	public boolean hasPathSum(TreeNode root, int sum) {
+		if(root == null)
+			return false;
+		if((root.left==null) && (root.right==null)){
+			Integer i = Integer.valueOf(root.val);
+			passList.add(i);
+			boolean b = (sum-root.val==0) ?true:false ;
+			 if(b) listOfList.add((ArrayList<Integer>)passList.clone());
+			 passList.remove(i);
+			return b;	 
+		}else if(root.right==null){
+			Integer i = Integer.valueOf(root.val);
+			passList.add(i);
+			 boolean b = hasPathSum(root.left, sum-root.val);
+			 passList.remove(i);
+			 return b;
+		}else if(root.left==null){
+			Integer i = Integer.valueOf(root.val);
+			passList.add(i);
+			boolean b =  hasPathSum(root.right, sum-root.val);
+			passList.remove(i);
+			return b;
+		}
+		Integer i = Integer.valueOf(root.val);
+		passList.add(i);
+		boolean b1 = hasPathSum(root.left, sum-root.val);
+		boolean b2 = hasPathSum(root.right, sum-root.val);
+		passList.remove(i);
+		return b1||b2;
+    }
+}
